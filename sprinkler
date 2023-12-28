@@ -1,0 +1,50 @@
+const int sensor1Pin = A0; // Analog input pin for moisture sensor 1
+const int sensor2Pin = A1; // Analog input pin for moisture sensor 2
+const int threshold = 40; // Threshold value for moisture level
+const int greenLedPin = 12; // Digital output pin for green LED
+const int redLedPin = 13; // Digital output pin for red LED
+
+void setup() {
+  Serial.begin(9600); // Initialize serial communication
+  pinMode(greenLedPin, OUTPUT); // Set green LED pin as output
+  pinMode(redLedPin, OUTPUT); // Set red LED pin as output
+}
+
+void loop() {
+  // Read sensor1 value
+  int sensor1Value = analogRead(sensor1Pin);
+  // Convert sensor1 value to percentage (0-100%)
+  int sensor1Percentage = map(sensor1Value, 0, 1023, 0, 100);
+
+  // Read sensor2 value
+  int sensor2Value = analogRead(sensor2Pin);
+  // Convert sensor2 value to percentage (0-100%)
+  int sensor2Percentage = map(sensor2Value, 0, 1023, 0, 100);
+
+  // Print sensor1 and sensor2 values to serial monitor
+  Serial.print("Sensor 1: ");
+  Serial.print(sensor1Percentage);
+  Serial.print("%   Sensor 2: ");
+  Serial.print(sensor2Percentage);
+  Serial.println("%");
+
+  // Check if moisture level is less than threshold for sensor1
+  if (sensor1Percentage < threshold) {
+    digitalWrite(greenLedPin, HIGH); // Turn on green LED
+    digitalWrite(redLedPin, LOW); // Turn off red LED
+  } else {
+    digitalWrite(greenLedPin, LOW); // Turn off green LED
+    digitalWrite(redLedPin, HIGH); // Turn on red LED
+  }
+
+  // Check if moisture level is less than threshold for sensor2
+  if (sensor2Percentage < threshold) {
+    digitalWrite(greenLedPin, HIGH); // Turn on green LED
+    digitalWrite(redLedPin, LOW); // Turn off red LED
+  } else {
+    digitalWrite(greenLedPin, LOW); // Turn off green LED
+    digitalWrite(redLedPin, HIGH); // Turn on red LED
+  }
+
+  delay(1000); // Delay for 1 second
+}
